@@ -99,6 +99,13 @@ h1 {
   gap: 24px;
 }
 
+.catalog-note {
+  width: 88%;
+  margin: 0 auto 16px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
 .card {
   overflow: hidden;
   border: 1px solid #eaecf0;
