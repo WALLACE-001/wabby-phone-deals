@@ -25,10 +25,16 @@ const phones = [
   { brand: "Sony", name: "Xperia 10 V", price: 89999, image: "images/phone-6.jpg" }
 ];
 
-let cartCount = 0;
+const cart = new Map();
 const products = document.querySelector("#products");
 const searchInput = document.querySelector("#search-input");
+const brandFilter = document.querySelector("#brand-filter");
+const sortOrder = document.querySelector("#sort-order");
+const productCount = document.querySelector("#product-count");
 const cartCountElement = document.querySelector("#cart-count");
+const cartDialog = document.querySelector("#cart-dialog");
+const cartItems = document.querySelector("#cart-items");
+const cartTotal = document.querySelector("#cart-total");
 
 function formatPrice(price) {
   return `KSh ${new Intl.NumberFormat("en-KE", {
@@ -36,24 +42,38 @@ function formatPrice(price) {
   }).format(price)}`;
 }
 
-function renderPhones(items) {
-  if (!items.length) {
-    products.innerHTML = '<p class="empty">No phones found.</p>';
+function renderPhones() {
+  const query = searchInput.value.trim().toLowerCase();
+  const selectedBrand = brandFilter.value;
+  const sort = sortOrder.value;
+  const matches = phones.filter((phone) => {
+    const matchesQuery = `${phone.brand} ${phone.name}`.toLowerCase().includes(query);
+    const matchesBrand = selectedBrand === "all" || phone.brand === selectedBrand;
+    return matchesQuery && matchesBrand;
+  });
+
+  if (sort === "price-low") matches.sort((a, b) => a.price - b.price);
+  if (sort === "price-high") matches.sort((a, b) => b.price - a.price);
+  if (sort === "name") matches.sort((a, b) => a.name.localeCompare(b.name));
+
+  productCount.textContent = `Showing ${matches.length} of ${phones.length} phones`;
+  if (!matches.length) {
+    products.innerHTML = '<p class="empty">No phones match that search. Try another brand or model.</p>';
     return;
   }
 
-  products.innerHTML = items.map((phone) => `
+  products.innerHTML = matches.map((phone) => `
     <article class="card">
       <div class="phone-art">
-        <img src="${phone.image}" alt="${phone.brand} ${phone.name}">
+        <img src="${phone.image}" alt="${phone.brand} ${phone.name}" loading="lazy">
+        <span class="phone-badge">${phone.brand}</span>
       </div>
       <div class="card-body">
-        <div class="brand-name">${phone.brand}</div>
-        <h2>${phone.name}</h2>
+        <h3>${phone.name}</h3>
         <div class="card-footer">
           <span class="price">${formatPrice(phone.price)}</span>
-          <button class="add-button" type="button" data-name="${phone.name}">
-            Add to cart
+          <button class="add-button" type="button" data-phone="${phone.name}">
+            Add to cart <span aria-hidden="true">+</span>
           </button>
         </div>
       </div>
@@ -61,22 +81,100 @@ function renderPhones(items) {
   `).join("");
 }
 
-searchInput.addEventListener("input", (event) => {
-  const query = event.target.value.trim().toLowerCase();
-  const matches = phones.filter((phone) =>
-    `${phone.brand} ${phone.name}`.toLowerCase().includes(query)
-  );
-  renderPhones(matches);
-});
+function updateCartCount() {
+  let totalItems = 0;
+  for (const quantity of cart.values()) totalItems += quantity;
+  cartCountElement.textContent = totalItems;
+  cartCountElement.setAttribute("aria-label", `${totalItems} items`);
+}
+
+function renderCart() {
+  const entries = Array.from(cart.entries());
+  if (!entries.length) {
+    cartItems.innerHTML = '<div class="cart-empty"><span aria-hidden="true">＋</span><p>Your cart is empty.</p><span>Add a phone to see it here.</span></div>';
+  } else {
+    cartItems.innerHTML = entries.map(([name, quantity]) => {
+      const phone = phones.find((item) => item.name === name);
+      return `
+        <article class="cart-item">
+          <img src="${phone.image}" alt="">
+          <div class="cart-item-info">
+            <strong>${phone.brand} ${phone.name}</strong>
+            <span>${formatPrice(phone.price)} each</span>
+            <div class="quantity-controls" aria-label="Quantity for ${phone.name}">
+              <button type="button" data-cart-action="decrease" data-phone="${phone.name}" aria-label="Decrease ${phone.name} quantity">−</button>
+              <span>${quantity}</span>
+              <button type="button" data-cart-action="increase" data-phone="${phone.name}" aria-label="Increase ${phone.name} quantity">+</button>
+              <button class="remove-item" type="button" data-cart-action="remove" data-phone="${phone.name}">Remove</button>
+            </div>
+          </div>
+          <strong class="cart-line-total">${formatPrice(phone.price * quantity)}</strong>
+        </article>
+      `;
+    }).join("");
+  }
+
+  const total = entries.reduce((sum, [name, quantity]) => {
+    const phone = phones.find((item) => item.name === name);
+    return sum + phone.price * quantity;
+  }, 0);
+  cartTotal.textContent = formatPrice(total);
+  updateCartCount();
+}
+
+function populateBrandFilter() {
+  const brands = [...new Set(phones.map((phone) => phone.brand))]
+    .sort((a, b) => a.localeCompare(b));
+  brands.forEach((brand) => {
+    const option = document.createElement("option");
+    option.value = brand;
+    option.textContent = brand;
+    brandFilter.append(option);
+  });
+}
+
+searchInput.addEventListener("input", renderPhones);
+brandFilter.addEventListener("change", renderPhones);
+sortOrder.addEventListener("change", renderPhones);
 
 products.addEventListener("click", (event) => {
-  const button = event.target.closest(".add-button");
-  if (!button) return;
+  const button = event.target.closest("[data-phone]");
+  if (!button || !button.classList.contains("add-button")) return;
 
-  cartCount += 1;
-  cartCountElement.textContent = cartCount;
-  button.textContent = "Added!";
-  setTimeout(() => { button.textContent = "Add to cart"; }, 800);
+  const name = button.dataset.phone;
+  cart.set(name, (cart.get(name) || 0) + 1);
+  renderCart();
+  button.innerHTML = "Added <span aria-hidden=\"true\">✓</span>";
+  window.setTimeout(() => {
+    if (button.isConnected) button.innerHTML = "Add to cart <span aria-hidden=\"true\">+</span>";
+  }, 900);
 });
 
-renderPhones(phones);
+cartItems.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-cart-action]");
+  if (!button) return;
+
+  const { phone, cartAction } = button.dataset;
+  const quantity = cart.get(phone);
+  if (cartAction === "increase") cart.set(phone, quantity + 1);
+  if (cartAction === "decrease" && quantity > 1) cart.set(phone, quantity - 1);
+  if (cartAction === "decrease" || cartAction === "remove") {
+    if (cartAction === "remove" || quantity === 1) cart.delete(phone);
+  }
+  renderCart();
+});
+
+document.querySelector("#open-cart").addEventListener("click", () => cartDialog.showModal());
+document.querySelector("#close-cart").addEventListener("click", () => cartDialog.close());
+document.querySelector("#clear-cart").addEventListener("click", () => {
+  cart.clear();
+  renderCart();
+});
+document.querySelector(".cart-directions").addEventListener("click", () => cartDialog.close());
+cartDialog.addEventListener("click", (event) => {
+  if (event.target === cartDialog) cartDialog.close();
+});
+
+populateBrandFilter();
+renderPhones();
+renderCart();

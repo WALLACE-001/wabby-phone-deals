@@ -3,48 +3,150 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WABBY PHONE DEALS | Smartphones</title>
+  <meta name="theme-color" content="#12251d">
+  <meta name="description" content="Browse phones and indicative prices in Kenyan shillings at WABBY PHONE DEALS in Kendu Bay, Homa Bay County.">
+  <title>WABBY PHONE DEALS | Smartphones in Kendu Bay</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <a class="brand" href="#">WABBY <span>PHONE DEALS</span></a>
-    <button class="cart-button" type="button" aria-label="Shopping cart">
-      Cart (<span id="cart-count">0</span>)
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="WABBY PHONE DEALS home">
+      <span class="brand-mark" aria-hidden="true">W</span>
+      <span class="brand-copy"><strong>WABBY</strong><small>PHONE DEALS</small></span>
+    </a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#shop">Shop phones</a>
+      <a href="#visit">Find our shop</a>
+    </nav>
+    <button class="cart-button" id="open-cart" type="button" aria-label="Open shopping cart">
+      Cart <span id="cart-count" class="cart-count">0</span>
     </button>
   </header>
 
   <main>
     <section class="hero">
-      <div>
-        <p class="eyebrow">Latest smartphones</p>
-        <h1>Find the phone that fits your life.</h1>
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-dot"></span>Your local phone stop</p>
+        <h1>A better phone is closer than you think.</h1>
+        <p class="hero-description">
+          Explore popular smartphone brands, compare sample prices in Kenyan shillings,
+          then visit us in Kendu Bay to check what's available.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#shop">Browse phones <span aria-hidden="true">↓</span></a>
+          <a class="text-link" href="#visit">How to find us <span aria-hidden="true">→</span></a>
+        </div>
       </div>
-      <label class="search">
-        <span>Search</span>
-        <input id="search-input" type="search" placeholder="Search phones">
-      </label>
+      <div class="hero-card" aria-label="Shop highlights">
+        <span class="hero-card-label">WABBY PHONE DEALS</span>
+        <div class="hero-phone" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="hero-card-bottom">
+          <div><strong>18</strong><span>phone brands</span></div>
+          <div><strong>KSh</strong><span>local pricing</span></div>
+          <div><strong>KB</strong><span>Kendu Bay</span></div>
+        </div>
+      </div>
+      <span class="hero-decoration hero-decoration-one" aria-hidden="true"></span>
+      <span class="hero-decoration hero-decoration-two" aria-hidden="true"></span>
     </section>
 
-    <p class="catalog-note">Prices and product photos are illustrative. Please confirm stock and final prices with the shop.</p>
-    <section class="products" id="products" aria-live="polite"></section>
+    <section class="benefits" aria-label="Shop highlights">
+      <article class="benefit">
+        <span class="benefit-icon" aria-hidden="true">01</span>
+        <div><h2>Plenty to explore</h2><p>Browse 24 sample phones from 18 popular brands.</p></div>
+      </article>
+      <article class="benefit">
+        <span class="benefit-icon" aria-hidden="true">02</span>
+        <div><h2>Compare at a glance</h2><p>Search by name, filter by brand, or sort by price.</p></div>
+      </article>
+      <article class="benefit">
+        <span class="benefit-icon" aria-hidden="true">03</span>
+        <div><h2>Visit us locally</h2><p>Find our shop near Big 5 in Kendu Bay.</p></div>
+      </article>
+    </section>
 
-    <section class="shop-location" aria-labelledby="location-heading">
-      <div>
-        <p class="eyebrow">Come visit us</p>
-        <h2 id="location-heading">Find WABBY PHONE DEALS</h2>
-        <address>Kendu Bay, near Big 5, Homa Bay County, Kenya</address>
+    <section class="shop-section" id="shop" aria-labelledby="shop-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">The phone collection</p>
+          <h2 id="shop-heading">Find your next favourite</h2>
+          <p class="section-description">Choose a brand, compare the sample prices, and add phones to your cart to see an estimated total.</p>
+        </div>
+        <span class="product-count" id="product-count" aria-live="polite"></span>
       </div>
-      <a
-        class="map-link"
-        href="https://www.google.com/maps/search/?api=1&amp;query=Big+5%2C+Kendu+Bay%2C+Homa+Bay+County%2C+Kenya"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Get directions
-      </a>
+
+      <div class="catalog-toolbar">
+        <label class="search">
+          <span class="sr-only">Search phones</span>
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="search-input" type="search" placeholder="Search a brand or model">
+        </label>
+        <label class="select-control">
+          <span class="sr-only">Filter by brand</span>
+          <select id="brand-filter">
+            <option value="all">All brands</option>
+          </select>
+        </label>
+        <label class="select-control">
+          <span class="sr-only">Sort phones</span>
+          <select id="sort-order">
+            <option value="featured">Sort: Featured</option>
+            <option value="price-low">Price: Low to high</option>
+            <option value="price-high">Price: High to low</option>
+            <option value="name">Name: A to Z</option>
+          </select>
+        </label>
+      </div>
+
+      <p class="catalog-note">Prices and product photos are illustrative. Please confirm stock and final prices with the shop.</p>
+      <section class="products" id="products" aria-live="polite"></section>
+    </section>
+
+    <section class="visit-section" id="visit" aria-labelledby="location-heading">
+      <div class="visit-copy">
+        <p class="eyebrow">A real local shop</p>
+        <h2 id="location-heading">Come say hello in Kendu Bay.</h2>
+        <p>WABBY PHONE DEALS is near Big 5 in Homa Bay County. Visit to check which models are in stock and confirm current prices before buying.</p>
+        <a
+          class="button button-light"
+          href="https://www.google.com/maps/search/?api=1&amp;query=Big+5%2C+Kendu+Bay%2C+Homa+Bay+County%2C+Kenya"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Get directions <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="visit-address">
+        <span class="pin-icon" aria-hidden="true">⌖</span>
+        <span class="address-label">OUR LOCATION</span>
+        <address>Kendu Bay, near Big 5,<br>Homa Bay County, Kenya</address>
+      </div>
     </section>
   </main>
+
+  <footer class="site-footer">
+    <a class="brand brand-footer" href="#"><span class="brand-mark" aria-hidden="true">W</span><span class="brand-copy"><strong>WABBY</strong><small>PHONE DEALS</small></span></a>
+    <p>Browse online. Visit us in Kendu Bay.</p>
+    <a href="#shop">Back to phones ↑</a>
+  </footer>
+
+  <dialog class="cart-dialog" id="cart-dialog" aria-labelledby="cart-heading">
+    <div class="cart-panel">
+      <div class="cart-header">
+        <div><p class="eyebrow">Your selection</p><h2 id="cart-heading">Shopping cart</h2></div>
+        <button class="close-cart" id="close-cart" type="button" aria-label="Close cart">×</button>
+      </div>
+      <div class="cart-items" id="cart-items"></div>
+      <div class="cart-summary">
+        <div class="cart-total-row"><span>Estimated total</span><strong id="cart-total">KSh 0</strong></div>
+        <p>Cart totals are estimates, not an order. Visit the shop to confirm stock and final prices.</p>
+        <a class="button button-primary cart-directions" href="#visit">Visit shop details <span aria-hidden="true">↓</span></a>
+        <button class="clear-cart" id="clear-cart" type="button">Clear cart</button>
+      </div>
+    </div>
+  </dialog>
 
   <script src="script.js"></script>
 </body>
