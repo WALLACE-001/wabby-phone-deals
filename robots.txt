@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://wallace-001.github.io/wabby-phone-deals/sitemap.xml
