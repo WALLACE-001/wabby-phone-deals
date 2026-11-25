@@ -1,10 +1,28 @@
 const phones = [
-  { brand: "Apple", name: "iPhone 15 Pro", price: 999, image: "images/phone-1.jpg" },
-  { brand: "Samsung", name: "Galaxy S24", price: 799, image: "images/phone-2.jpg" },
-  { brand: "Google", name: "Pixel 8 Pro", price: 899, image: "images/phone-3.jpg" },
-  { brand: "OnePlus", name: "OnePlus 12", price: 699, image: "images/phone-4.jpg" },
-  { brand: "Samsung", name: "Galaxy Z Flip 5", price: 999, image: "images/phone-5.jpg" },
-  { brand: "Xiaomi", name: "Xiaomi 14", price: 649, image: "images/phone-6.jpg" }
+  { brand: "Apple", name: "iPhone 15 Pro", price: 189999, image: "images/phone-1.jpg" },
+  { brand: "Apple", name: "iPhone 16", price: 144999, image: "images/phone-2.jpg" },
+  { brand: "Samsung", name: "Galaxy S24", price: 119999, image: "images/phone-3.jpg" },
+  { brand: "Samsung", name: "Galaxy A55", price: 49999, image: "images/phone-4.jpg" },
+  { brand: "Samsung", name: "Galaxy Z Flip 5", price: 139999, image: "images/phone-5.jpg" },
+  { brand: "Google", name: "Pixel 8 Pro", price: 109999, image: "images/phone-6.jpg" },
+  { brand: "Google", name: "Pixel 8a", price: 64999, image: "images/phone-1.jpg" },
+  { brand: "OnePlus", name: "OnePlus 12", price: 99999, image: "images/phone-2.jpg" },
+  { brand: "Xiaomi", name: "Xiaomi 14", price: 104999, image: "images/phone-3.jpg" },
+  { brand: "Redmi", name: "Redmi Note 13 Pro", price: 34999, image: "images/phone-4.jpg" },
+  { brand: "Tecno", name: "Camon 30", price: 34999, image: "images/phone-5.jpg" },
+  { brand: "Tecno", name: "Spark 20", price: 19999, image: "images/phone-6.jpg" },
+  { brand: "Infinix", name: "Note 40 Pro", price: 34999, image: "images/phone-1.jpg" },
+  { brand: "Infinix", name: "Hot 40i", price: 16999, image: "images/phone-2.jpg" },
+  { brand: "OPPO", name: "Reno11 F", price: 49999, image: "images/phone-3.jpg" },
+  { brand: "Vivo", name: "V30", price: 64999, image: "images/phone-4.jpg" },
+  { brand: "Huawei", name: "Nova 12i", price: 35999, image: "images/phone-5.jpg" },
+  { brand: "Nokia", name: "G42", price: 29999, image: "images/phone-6.jpg" },
+  { brand: "Motorola", name: "Edge 40 Neo", price: 52999, image: "images/phone-1.jpg" },
+  { brand: "Realme", name: "12 Pro", price: 44999, image: "images/phone-2.jpg" },
+  { brand: "HONOR", name: "X9b", price: 46999, image: "images/phone-3.jpg" },
+  { brand: "Nothing", name: "Phone (2a)", price: 49999, image: "images/phone-4.jpg" },
+  { brand: "itel", name: "P55", price: 16999, image: "images/phone-5.jpg" },
+  { brand: "Sony", name: "Xperia 10 V", price: 89999, image: "images/phone-6.jpg" }
 ];
 
 let cartCount = 0;
@@ -13,11 +31,9 @@ const searchInput = document.querySelector("#search-input");
 const cartCountElement = document.querySelector("#cart-count");
 
 function formatPrice(price) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
+  return `KSh ${new Intl.NumberFormat("en-KE", {
     maximumFractionDigits: 0
-  }).format(price);
+  }).format(price)}`;
 }
 
 function renderPhones(items) {
