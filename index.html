@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WABBY PHONE DEALS | Smartphones</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <a class="brand" href="#">WABBY <span>PHONE DEALS</span></a>
+    <button class="cart-button" type="button" aria-label="Shopping cart">
+      Cart (<span id="cart-count">0</span>)
+    </button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Latest smartphones</p>
+        <h1>Find the phone that fits your life.</h1>
+      </div>
+      <label class="search">
+        <span>Search</span>
+        <input id="search-input" type="search" placeholder="Search phones">
+      </label>
+    </section>
+
+    <section class="products" id="products" aria-live="polite"></section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
